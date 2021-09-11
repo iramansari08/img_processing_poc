@@ -2,12 +2,12 @@ from tkinter import *
 from tkinter import filedialog
 from PIL import ImageTk, Image
 import cv2
-import pytesseract 
+import pytesseract
 
 pytesseract.pytesseract.tesseract_cmd = 'C:\\Program Files\\Tesseract-OCR\\tesseract.exe'
 
 root = Tk()
-root.title('Text from image project') 
+root.title('Text from image project')
 
 newline= Label(root)
 uploaded_img=Label(root)
@@ -20,7 +20,7 @@ def extract(path):
     Sample_img = cv2.resize(Actual_image,(400,350))
     Image_ht,Image_wd,Image_thickness = Sample_img.shape
     Sample_img = cv2.cvtColor(Sample_img,cv2.COLOR_BGR2RGB)
-    texts = pytesseract.image_to_data(Sample_img) 
+    texts = pytesseract.image_to_data(Sample_img)
     mytext=""
     prevy=0
     for cnt,text in enumerate(texts.splitlines()):
@@ -46,13 +46,14 @@ def show_extract_button(path):
 def upload():
     try:
         path=filedialog.askopenfilename()
-        image=Image.open(path)
+        og_image=Image.open(path)
+        image= og_image.resize((200,200), Image.ANTIALIAS)
         img=ImageTk.PhotoImage(image)
         uploaded_img.configure(image=img)
-        #uploaded_img.image=img
+        uploaded_img.image=img
         show_extract_button(path)
     except:
-        pass  
+        pass
 
 uploadbtn = Button(root,text="Upload an image",command=upload,bg="#2f2f77",fg="gray",height=2,width=20,font=('Times',15,'bold')).pack()
 newline.configure(text='\n')
